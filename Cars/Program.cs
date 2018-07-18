@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Cars
 {
@@ -11,6 +12,97 @@ namespace Cars
     {
         static void Main(string[] args)
         {
+            #region Region31 - Create element-oriented XML
+
+            Console.WriteLine("Create attribute-oriented XML");
+
+            CreateAttributeOrientedXML();
+            QueryXML();
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            #region Region30 - Create attribute-oriented XML
+
+            Console.WriteLine("Create attribute-oriented XML");
+
+            CreateAttributeOrientedXML();
+            //QueryXML();
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            /*******************************************/
+
+            #region Region29 - Building attribute-oriented XML - Fourth way
+
+            Console.WriteLine("Building attribute-oriented XML - Fourth way");
+
+            BuildingAttributeOrientedXMLFourthWay();
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            /*******************************************/
+
+            #region Region28 - Building attribute-oriented XML - Third way
+
+            Console.WriteLine("Building attribute-oriented XML - Third way");
+
+            BuildingAttributeOrientedXMLThirdWay();
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            /*******************************************/
+
+            #region Region27 - Building attribute-oriented XML - Second way
+
+            Console.WriteLine("Building attribute-oriented XML - Second way");
+
+            BuildingAttributeOrientedXMLSecondWay();
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            /*******************************************/
+
+            #region Region26 - Building attribute-oriented XML
+
+            Console.WriteLine("Building attribute-oriented XML");
+
+            BuildingAttributeOrientedXML();
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            /*******************************************/
+
+            #region Region25 - Building element-oriented XML
+
+            Console.WriteLine("Building element-oriented XML");
+
+            BuildingElementOrientedXML();
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            /*******************************************/
+
             #region Region24 - Method syntax - GroupJoin data, ordering and iterating inside
 
             Console.WriteLine("Method syntax - GroupJoin data, ordering and iterating inside");
@@ -26,15 +118,15 @@ namespace Cars
                                                         Manufacturer = m,
                                                         Cars = g
                                                     })
-                                         .OrderBy(m => m.Manufacturer.Name); 
+                                         .OrderBy(m => m.Manufacturer.Name);
 
             foreach (var group in query20)
             {
-                Console.WriteLine($"{group.Manufacturer.Name}: {group.Manufacturer.Headquarters}");
+                //Console.WriteLine($"{group.Manufacturer.Name}: {group.Manufacturer.Headquarters}");
 
                 foreach (var car in group.Cars.OrderByDescending(c => c.Combined).Take(2))
                 {
-                    Console.WriteLine($"\t{car.Name}: {car.Combined}");
+                    //Console.WriteLine($"\t{car.Name}: {car.Combined}");
                 }
             }
 
@@ -224,7 +316,7 @@ namespace Cars
 
             var query13 = from car in cars17
                           join manufacturer in manufacturers5
-                            on new { car.Manufacturer, car.Year } 
+                            on new { car.Manufacturer, car.Year }
                             equals new { Manufacturer = manufacturer.Name, manufacturer.Year }
                           orderby car.Combined descending, car.Name ascending
                           select new
@@ -263,7 +355,8 @@ namespace Cars
                                       })
                                 .OrderByDescending(c => c.Car.Combined)
                                 .ThenBy(c => c.Car.Name)
-                                .Select(c => new {
+                                .Select(c => new
+                                {
                                     c.Manufacturer.Headquarters,
                                     c.Car.Name,
                                     c.Car.Combined
@@ -471,11 +564,12 @@ namespace Cars
             var query5 = from car in cars9
                          where car.Manufacturer == "BMW" && car.Year == 2016
                          orderby car.Combined descending, car.Name ascending
-                         select new {
+                         select new
+                         {
                              Manufacturer = car.Manufacturer,
                              Name = car.Name,
                              Combined = car.Combined
-                         };            
+                         };
 
             var top4 = query5.First();
 
@@ -497,11 +591,12 @@ namespace Cars
             var top3 = cars8.Where(c => c.Manufacturer == "BMW" && c.Year == 2016)
                               .OrderByDescending(c => c.Combined)
                               .ThenBy(c => c.Name)
-                              .Select(c => new {
-                                                    c.Manufacturer,
-                                                    c.Name,
-                                                    c.Combined
-                                               })
+                              .Select(c => new
+                              {
+                                  c.Manufacturer,
+                                  c.Name,
+                                  c.Combined
+                              })
                               .First();
 
             Console.WriteLine($"{top3.Name}: {top3.Combined}");
@@ -527,7 +622,7 @@ namespace Cars
             Console.WriteLine($"{top2.Name}: {top2.Combined}");
 
             Console.WriteLine("**********");
-            Console.WriteLine("\r");            
+            Console.WriteLine("\r");
 
             #endregion
 
@@ -548,7 +643,7 @@ namespace Cars
             Console.WriteLine($"{top.Name}: {top.Combined}");
 
             Console.WriteLine("**********");
-            Console.WriteLine("\r");            
+            Console.WriteLine("\r");
 
             #endregion
 
@@ -666,6 +761,181 @@ namespace Cars
             Console.ReadKey();
         }
 
+        #region Private methods        
+
+        private static void CreateElementOrientedXML()
+        {
+            var records = ProcessFile("fuel.csv");
+
+            var document = new XDocument();
+            var cars = new XElement("Cars");
+
+            foreach (var record in records)
+            {
+                var car = new XElement("Car");
+                var name = new XElement("Name", record.Name);
+                var combined = new XElement("Combined", record.Combined);
+                var manufacturer = new XElement("Manufacturer", record.Manufacturer);
+
+                car.Add(name);
+                car.Add(combined);
+                car.Add(manufacturer);
+
+                cars.Add(car);
+            }
+
+            document.Add(cars);
+            document.Save("fuel-createElementOrientedXML.xml");
+        }
+
+        private static void QueryXML()
+        {
+            var document = XDocument.Load("fuel-createAttributeOriented.xml");
+
+            var query = from element in document.Element("Cars")?.Elements("Car") ?? Enumerable.Empty<XElement>()
+                        where element.Attribute("Manufacturer")?.Value == "BMW"
+                        select element.Attribute("Name").Value;
+
+            //var query = from element in document.Element("Cars").Elements("Car")
+            //            where element.Attribute("Manufacturer")?.Value == "BMW"
+            //            select element.Attribute("Name").Value;
+
+            //var query = from element in document.Descendants("Car")
+            //            where element.Attribute("Manufacturer")?.Value == "BMW"
+            //            select element.Attribute("Name").Value;
+
+            foreach (var name in query)
+            {
+                Console.WriteLine(name);
+            }
+        }
+
+        /// <summary>
+        /// This is the same code that "BuildingAttributeOrientedXMLFourthWay"
+        /// </summary>
+        private static void CreateAttributeOrientedXML()
+        {
+            var records = ProcessFile("fuel.csv");
+
+            var document = new XDocument();
+            var cars = new XElement("Cars");
+
+            var elements = from record in records
+                           select new XElement("Car",
+                                        new XAttribute("Name", record.Name),
+                                        new XAttribute("Combined", record.Combined),
+                                        new XAttribute("Manufacturer", record.Manufacturer));
+
+            cars.Add(elements);
+            document.Add(cars);
+            document.Save("fuel-createAttributeOriented.xml");
+        }
+
+        private static void BuildingAttributeOrientedXMLFourthWay()
+        {
+            var records = ProcessFile("fuel.csv");
+
+            var document = new XDocument();
+            var cars = new XElement("Cars");
+
+            var elements = from record in records
+                           select new XElement("Car",
+                                        new XAttribute("Name", record.Name),
+                                        new XAttribute("Combined", record.Combined),
+                                        new XAttribute("Manufacturer", record.Manufacturer));
+
+            cars.Add(elements);
+            document.Add(cars);
+            document.Save("fuel-attributeOrientedFourthWay.xml");
+        }
+
+        private static void BuildingAttributeOrientedXMLThirdWay()
+        {
+            var records = ProcessFile("fuel.csv");
+
+            var document = new XDocument();
+            var cars = new XElement("Cars");
+
+            foreach (var record in records)
+            {
+                var car = new XElement("Car",
+                                        new XAttribute("Name", record.Name),
+                                        new XAttribute("Combined", record.Combined),
+                                        new XAttribute("Manufacturer", record.Manufacturer));
+
+                cars.Add(car);
+            }
+
+            document.Add(cars);
+            document.Save("fuel-attributeOrientedThirdWay.xml");
+        }
+
+        private static void BuildingAttributeOrientedXMLSecondWay()
+        {
+            var records = ProcessFile("fuel.csv");
+
+            var document = new XDocument();
+            var cars = new XElement("Cars");
+
+            foreach (var record in records)
+            {                
+                var name = new XAttribute("Name", record.Name);
+                var combined = new XAttribute("Combined", record.Combined);
+                var car = new XElement("Car", name, combined);
+                
+                cars.Add(car);
+            }
+
+            document.Add(cars);
+            document.Save("fuel-attributeOrientedSecondWay.xml");
+        }
+
+        private static void BuildingAttributeOrientedXML()
+        {
+            var records = ProcessFile("fuel.csv");
+
+            var document = new XDocument();
+            var cars = new XElement("Cars");
+
+            foreach (var record in records)
+            {
+                var car = new XElement("Car");
+                var name = new XAttribute("Name", record.Name);
+                var combined = new XAttribute("Combined", record.Combined);
+
+                car.Add(name);
+                car.Add(combined);
+
+                cars.Add(car);
+            }
+
+            document.Add(cars);
+            document.Save("fuel-attributeOriented.xml");
+        }
+
+        private static void BuildingElementOrientedXML()
+        {
+            var records = ProcessFile("fuel.csv");
+
+            var document = new XDocument();
+            var cars = new XElement("Cars");
+
+            foreach (var record in records)
+            {
+                var car = new XElement("Car");
+                var name = new XElement("Name", record.Name);
+                var combined = new XElement("Combined", record.Combined);
+
+                car.Add(name);
+                car.Add(combined);
+
+                cars.Add(car);
+            }
+
+            document.Add(cars);
+            document.Save("fuel.xml");            
+        }
+
         private static List<Manufacturer> ProcessManufacturers(string path)
         {
             var query = File.ReadAllLines(path)
@@ -738,5 +1008,7 @@ namespace Cars
                        .Select(Car.ParseFromCsv)
                        .ToList();
         }
+
+        #endregion
     }
 }
