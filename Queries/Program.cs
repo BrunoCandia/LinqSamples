@@ -10,6 +10,85 @@ namespace Queries
     {
         static void Main(string[] args)
         {
+            #region Region7 - Streaming opeartors
+
+            Console.WriteLine("Streaming opeartors");
+
+            var numbers = MyLinq.Random().Where(n => n > 0.5).Take(10);
+
+            foreach (var number in numbers)
+            {
+                Console.WriteLine(number);
+            }
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            /*******************************************/
+
+            #region Region6 - Non-streaming operator (OrderBy)
+            /*
+                Operator that offer deferred execition also can be devided into
+                streaming operator(Where) and non-streaming operator(OrderBy)
+            */
+
+            Console.WriteLine("Non-streaming operator (OrderBy)");
+
+            var movies6 = new List<Movie> {
+                new Movie { Title = "the dark", Rating = 8.9f, Year = 2008 },
+                new Movie { Title = "the king", Rating = 8.0f, Year = 2010 },
+                new Movie { Title = "casablanca", Rating = 8.5f, Year = 1942 },
+                new Movie { Title = "star wars", Rating = 8.7f, Year = 1980 }
+            };
+
+            var query6 = movies6.Where(m => m.Year > 2000)
+                                .OrderByDescending(m => m.Rating);
+
+            var enumerator3 = query6.GetEnumerator();
+            while (enumerator3.MoveNext())
+            {
+                Console.WriteLine(enumerator3.Current.Title);
+            }
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            /*******************************************/
+
+            #region Region5 - Streaming operator (Where)
+            /*
+                Operator that offer deferred execition also can be devided into
+                streaming operator(Where) and non-streaming operator(OrderBy)
+            */
+
+            Console.WriteLine("Streaming operator (Where)");
+
+            var movies5 = new List<Movie> {
+                new Movie { Title = "the dark", Rating = 8.9f, Year = 2008 },
+                new Movie { Title = "the king", Rating = 8.0f, Year = 2010 },
+                new Movie { Title = "casablanca", Rating = 8.5f, Year = 1942 },
+                new Movie { Title = "star wars", Rating = 8.7f, Year = 1980 }
+            };
+
+            var query5 = movies5.Where(m => m.Year > 2000);
+
+            var enumerator2 = query5.GetEnumerator();
+            while (enumerator2.MoveNext())
+            {
+                Console.WriteLine(enumerator2.Current.Title);
+            }
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            /*******************************************/
+
             #region Region4 - Custom filter operator with deferred execution and GetEnumerator()"
 
             Console.WriteLine("Custom filter operator with deferred execution and GetEnumerator()");
