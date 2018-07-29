@@ -41,7 +41,9 @@ namespace XMLSamples
             foreach (var attr in document.Descendants().Attributes())
             {
                 var elem = attr.Parent;
+                var sum = 5 + 7;
                 attr.Remove();
+                var substract = 5 - 2; 
                 elem?.Add(new XAttribute(attr.Name.LocalName, attr.Value));
             }
 
