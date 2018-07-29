@@ -60,6 +60,10 @@ namespace XMLSamples
 
     public static class XmlParser
     {
+        public static string AppendToNodeName { get; }
+        public static XDocument[] SubDocuments { get; }
+        public static XDocument Document { get; }
+
         static XmlParser()
         {
             var document = XDocument.Load("fuel-carsItems.xml");
@@ -92,10 +96,6 @@ namespace XMLSamples
 
             //Remove the child documents from the original doc. Ww'll assemble the doc again before return.
             Document = document;
-        }
-
-        public static string AppendToNodeName { get; }
-        public static XDocument[] SubDocuments { get; }
-        public static XDocument Document { get; }
+        }        
     }
 }
