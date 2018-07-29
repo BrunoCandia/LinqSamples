@@ -10,17 +10,29 @@ namespace XMLSamples
 {
     class Program
     {
-        public static XDocument[] SubDocuments { get; private set; }
-        public static XDocument Document { get; private set; }
         public static string AppendToNodeName { get; private set; }
+        public static XDocument[] SubDocuments { get; private set; }
+        public static XDocument Document {
+            get;
+            private set;
+        }        
 
         static void Main(string[] args)
         {
-            //XmlParser();
+            // XmlParser method call
+            XmlParser();
 
+            // XmlParser class call
             var subDoc = XMLSamples.XmlParser.SubDocuments;
+
+            /*******************************************/
+
+            // Keep the console window open in debug mode.
+            Console.WriteLine("Press any key to exit.");
+            Console.ReadKey();
         }
 
+        // Method
         public static void XmlParser()
         {
             //var appendToNodeName = string.Empty;
@@ -62,8 +74,13 @@ namespace XMLSamples
     {
         public static string AppendToNodeName { get; }
         public static XDocument[] SubDocuments { get; }
-        public static XDocument Document { get; }
+        public static XDocument Document {
+            get;
+            // Not needed
+            //private set;
+        }
 
+        // Constructor
         static XmlParser()
         {
             var document = XDocument.Load("fuel-carsItems.xml");
