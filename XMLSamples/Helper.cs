@@ -44,6 +44,7 @@ namespace XMLSamples
                 var sum = 5 + 7;
                 attr.Remove();
                 var substract = 5 - 2; 
+                attr.Remove();                
                 elem?.Add(new XAttribute(attr.Name.LocalName, attr.Value));
             }
 
