@@ -39,10 +39,7 @@ namespace XMLSamples
                 elem.Name = elem.Name.LocalName;
 
             foreach (var attr in document.Descendants().Attributes())
-            {
-                var elem = attr.Parent;
-                attr.Remove();                
-                elem?.Add(new XAttribute(attr.Name.LocalName, attr.Value));
+            {                
             }
 
             var matchedDocs = document.XPathSelectElements("/Cars/Car").ToList();
