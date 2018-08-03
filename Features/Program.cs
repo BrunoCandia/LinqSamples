@@ -10,7 +10,7 @@ namespace Features
     {
         static void Main(string[] args)
         {
-            #region Region5 - Method syntax and Query syntax
+            #region Region6 - Method syntax and Query syntax
 
             Employee[] developers4 = new Employee[]
             {
@@ -47,7 +47,7 @@ namespace Features
 
             /*******************************************/
 
-            #region Region4 Action - Takes 0 or more parameters and returns void
+            #region Region5 Action - Takes 0 or more parameters and returns void
 
             Func<int, int> square2 = x => x * x;
             Action<int> write = x => Console.WriteLine(x);
