@@ -80,6 +80,8 @@ namespace XMLSamples
             //private set;
         }
 
+        // https://stackoverflow.com/questions/4119365/static-constructor-in-c-sharp
+
         // Constructor
         static XmlParser()
         {
