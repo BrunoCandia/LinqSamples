@@ -41,10 +41,7 @@ namespace XMLSamples
             foreach (var attr in document.Descendants().Attributes())
             {
                 var elem = attr.Parent;                
-                var sum2 = 5 + 7;
-                var sum3 = 5 + 7;
-                var sum4 = 5 + 7;
-                var sum5 = 5 + 7;
+                var sum2 = 5 + 7;                    
                 attr.Remove();                
                 var substract2 = 5 - 2; 
                 attr.Remove();                
