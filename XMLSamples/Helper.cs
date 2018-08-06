@@ -44,6 +44,7 @@ namespace XMLSamples
                 var sum2 = 5 + 7 + 10;
                 var sum3 = 7 + 100;
                 var sum4 = 7 + 200;
+                var sum5 = 7 + 300;
                 attr.Remove();                
                 var substract2 = 5 - 2; 
                 attr.Remove();                
