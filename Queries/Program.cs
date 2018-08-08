@@ -30,7 +30,7 @@ namespace Queries
 
             #region Region6 - Non-streaming operator (OrderBy)
             /*
-                Operator that offer deferred execition also can be devided into
+                Operator that offer deferred execution also can be devided into
                 streaming operator(Where) and non-streaming operator(OrderBy)
             */
 
@@ -61,7 +61,7 @@ namespace Queries
 
             #region Region5 - Streaming operator (Where)
             /*
-                Operator that offer deferred execition also can be devided into
+                Operator that offer deferred execution also can be devided into
                 streaming operator(Where) and non-streaming operator(OrderBy)
             */
 
