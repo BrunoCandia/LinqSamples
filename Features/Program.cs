@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,52 @@ namespace Features
     {
         static void Main(string[] args)
         {
+            #region Region7 - Functional programming
+
+            var duration = Time(() => TestMethod());
+
+            Console.WriteLine($"Elapsed in Milliseconds: {duration}");
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            /*******************************************/
+
+            #region Region6 - Peek extension method to get the results by steps
+
+            Employee[] developers5 = new Employee[]
+            {
+                new Employee { Id = 1, Name = "Juan" },
+                new Employee { Id = 2, Name = "Jose" },
+                new Employee { Id = 3, Name = "Antonio" }
+            };
+
+            var query3 = developers5.Where(e => e.Name.Length > 3)
+                                    .Peek(e => Console.WriteLine($"Step 1: {e.Name}"))
+                                    .OrderBy(e => e.Name)
+                                    .Peek(e => Console.WriteLine($"Step 2: {e.Name}"));
+
+            //var query3 = Enumerable.Range(1, 10)
+            //    .Select(n => n * n)
+            //    .Peek(n => Console.WriteLine($"Step 1: {n}"))
+            //    .Select(n => n / 2)
+            //    .Peek(n => Console.WriteLine($"Step 2: {n}"))
+            //    .Select(n => n - 5);
+
+            foreach (var item in query3)
+            {
+                Console.WriteLine($"Output: {item.Name}");
+            }
+
+            Console.WriteLine("**********");
+            Console.WriteLine("\r");
+
+            #endregion
+
+            /*******************************************/
+
             #region Region5 - Method syntax and Query syntax
 
             Employee[] developers4 = new Employee[]
@@ -223,6 +270,36 @@ namespace Features
         private static bool NameStartsWithC(Employee employee)
         {
             return employee.Name.StartsWith("C");
+        }
+
+        private static long Time(Action action)
+        {
+            var s = new Stopwatch();
+
+            s.Start();
+            action();
+            s.Stop();
+
+            return s.ElapsedMilliseconds;
+        }
+
+        private static void TestMethod()
+        {
+            Employee[] developers = new Employee[]
+            {
+                new Employee { Id = 1, Name = "Juan" },
+                new Employee { Id = 2, Name = "Jose" },
+                new Employee { Id = 3, Name = "Antonio" }
+            };
+
+            var query = developers.Where(e => e.Name.Length > 3)                                  
+                                   .OrderBy(e => e.Name)                                   
+                                   .Select(e => e.Name);
+
+            foreach (var item in query)
+            {
+                Console.WriteLine($"Output: {item}");
+            }
         }
     }
 }

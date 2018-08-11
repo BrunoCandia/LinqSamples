@@ -19,5 +19,14 @@ namespace Features
 
             return count;
         }
+
+        public static IEnumerable<T> Peek<T>(this IEnumerable<T> source, Action<T> action)
+        {
+            foreach (var element in source)
+            {
+                action(element);
+                yield return element;
+            }
+        }
     }
 }
